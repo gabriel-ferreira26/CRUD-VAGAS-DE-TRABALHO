@@ -100,5 +100,27 @@ class Database{
 
         return $this->execute($query);
     }
+
+    public function update($where, $values){
+        //recebe dados da query
+        $fields = array_keys($values);
+
+
+        //monta a query
+        $query = ' UPDATE '.$this->table.' SET '.implode(' =?, ',$fields).' =? WHERE '.$where;
+
+        //executa a query 
+        $this->execute($query, array_values($values));
+
+        return true;
+    }
+
+    public function delete($where){
+        $query = 'DELETE FROM '.$this->table.' WHERE '.$where;
+
+        $this->execute($query);
+
+        return true;
+    }
     
 }
