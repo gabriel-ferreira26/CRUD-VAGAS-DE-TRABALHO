@@ -39,7 +39,6 @@ class Database{
     private function setConnection(){
  
         try{
-            print_r(self::NAME);
             $this->connection = new PDO('mysql:host='.self::HOST.';dbname='.self::NAME,self::USER,self::PASS);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
         }catch(PDOException $e){
@@ -90,8 +89,16 @@ class Database{
      * @param string $limit
      * @return PDOstatement
      */
-    public function select($where = null, $order = null, $limit = null){
-        $query = 'SELECT * FROM '.$this->table.'';
+    public function select($where = null, $order = null, $limit = null, $fields = '*'){
+        //DADOS DA QUERY
+        $where =strlen($where) ? 'WHERE' .$where :'';
+        $order =strlen($order) ? 'ORDER BY' .$order :'';
+        $limit =strlen($limit) ? 'LIMIT' .$limit :'';
+
+
+        $query = 'SELECT '.$fields.'FROM '.$this->table.' '.$where.' '.$order.' '.$limit;
+
+        return $this->execute($query);
     }
     
 }

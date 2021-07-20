@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 use \App\Db\Database;
+use \PDO;
 
 class Vaga{
     
@@ -64,6 +65,17 @@ class Vaga{
      * @return array
      */
     public static function getVagas($where = null, $order = null, $limit = null){
-        return (new Database('vagas'))->select($where,$order,$limit);
+        return (new Database('vagas'))->select($where,$order,$limit)
+                                      ->fetchAll(PDO::FETCH_CLASS,self::class);
+    }
+
+    /**
+     * Método responsavel por buscar uma vaga com base em seu id
+     * @param integer $id
+     * @return Vaga
+     */
+    public static function getVaga($id){
+        return (new Database(' vagas '))->select('id = '.$id);
+                                     //->fetchObject(self::class);
     }
 }
